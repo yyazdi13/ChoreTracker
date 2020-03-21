@@ -13,13 +13,13 @@ router.post("/", (req, res) => {
       console.log("user post error: ", err);
     } else if (user) {
       res.json({
-        error: "Username already in use: ${username}"
+        error: "Username already in use"
       });
     } else {
       const newUser = new User({
-        username: username,
-        role: role,
-        password: password
+        username: req.body.username,
+        role: req.body.role,
+        password: req.body.password
       });
 
       newUser.save((err, savedUser) => {
@@ -46,6 +46,7 @@ router.post(
     res.send(userInfo);
   }
 );
+
 router.get("/", (req, res, next) => {
   console.log("===user!===");
   console.log(req.user);
@@ -56,7 +57,7 @@ router.get("/", (req, res, next) => {
   }
 });
 
-router.post("logout", (req, res) => {
+router.post("/logout", (req, res) => {
   if (req.user) {
     req.logout();
     res.send({ msg: "Logging out " });

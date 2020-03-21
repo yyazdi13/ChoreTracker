@@ -11,4 +11,4 @@ const earningsSchema = new Schema({
   }
 });
 
-module.exports = Earnings = mongoose.Schema("earnings", earningsSchema);
+module.exports = Earnings = mongoose.Schema("Earnings", earningsSchema);
