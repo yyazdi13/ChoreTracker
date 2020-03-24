@@ -4,7 +4,7 @@ import React from "react";
 export default class Kids extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {value: 'coconut'};
+      this.state = {value: 'Chore'};
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -15,7 +15,7 @@ export default class Kids extends React.Component {
     }
   
     handleSubmit(event) {
-      alert('Your favorite flavor is: ' + this.state.value);
+      alert('You chore: ' + this.state.value);
       event.preventDefault();
     }
   
@@ -23,12 +23,12 @@ export default class Kids extends React.Component {
       return (
         <form onSubmit={this.handleSubmit}>
           <label>
-            Pick your favorite flavor:
+             your Chort:
             <select value={this.state.value} onChange={this.handleChange}>
-              <option value="grapefruit">Grapefruit</option>
-              <option value="lime">Lime</option>
-              <option value="coconut">Coconut</option>
-              <option value="mango">Mango</option>
+              <option value="plates">Dishes</option>
+              <option value='cloth'>Lundry</option>
+              <option value="brum">sweep</option>
+              <option value="food">Feed Dogs</option>
             </select>
           </label>
           <input type="submit" value="Submit" />

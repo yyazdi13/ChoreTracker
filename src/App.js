@@ -1,30 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Kids from "./kidsfrontEnd.html/kidsfrontEnd";
-
-
+import Nav from "./components/Nav"
+import ChoreCard from "./components/ChoreCard"
+import kids from "./kidsfrontEnd.html/kidsfrontEnd"
 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Kids/>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="bg">
+      <Nav />
+      <ChoreCard />
+      <Kids/>
+      </div>
+        
     </div>
+   
   );
 }
 
