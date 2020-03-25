@@ -7,8 +7,8 @@ class Register extends Component {
 
     this.state = {
       username: "",
-      role: "",
       password: "",
+      role: "",
       confirmPassword: ""
     };
 
@@ -26,13 +26,19 @@ class Register extends Component {
     console.log(this.state.username);
     event.preventDefault();
 
+    //New Line of Code
+    const { username, password, role } = this.state;
+    const user = { username, password, role };
+    this.props.isloading();
+    this.props.register(user);
+
     //request to server to add a new username/password
     axios
-      .post("/user/", {
+      .post("/user/register", {
         username: this.state.username,
-        role: this.state.role,
         password: this.state.password,
-        password_confirmation: this.state.password_confirmation
+        password_confirmation: this.state.password_confirmation,
+        role: this.state.role
       })
       .then(response => {
         console.log(response);
@@ -66,25 +72,25 @@ class Register extends Component {
           />
 
           <input
-            type="text"
-            name="role"
-            placeholder="Role - Parent or Child"
-            value={this.state.role}
-            onChange={this.handleChange}
-          />
-          <input
             type="password"
             name="password"
             placeholder="Password"
             value={this.state.password}
             onChange={this.handleChange}
           />
-
           <input
             type="password"
             name="password_confirmation"
             placeholder="Password confirmation"
             value={this.state.password_confirmation}
+            onChange={this.handleChange}
+          />
+
+          <input
+            type="text"
+            name="role"
+            placeholder="role - Parent or Child"
+            value={this.state.role}
             onChange={this.handleChange}
           />
 

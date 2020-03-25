@@ -24,8 +24,14 @@ class Login extends Component {
     event.preventDefault();
     console.log("handleSubmit");
 
+    //New line of code
+    const { username, password } = this.state;
+    const user = { username, password };
+    this.props.isLoading();
+    this.props.login(user);
+
     axios
-      .post("/user/login", {
+      .post("/user/login/", {
         username: this.state.username,
         password: this.state.password
       })
