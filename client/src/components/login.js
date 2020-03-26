@@ -1,91 +1,70 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       username: "",
       password: "",
-      redirectTo: null
+      error: null,
+      valerrors: null
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
+    this.submitHandler = this.submitHandler.bind(this);
   }
-
-  handleChange(event) {
+  changeHandler(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
-
-  handleSubmit(event) {
+  submitHandler(event) {
     event.preventDefault();
-    console.log("handleSubmit");
-
-    //New line of code
-    const { username, password } = this.state;
-    const user = { username, password };
-    this.props.isLoading();
-    this.props.login(user);
-
-    axios
-      .post("/user/login/", {
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then(response => {
-        console.log("login response: ");
-        console.log(response);
-        if (response.status === 200) {
-          // update App.js state
-          this.props.updateUser({
-            loggedIn: true,
-            username: response.data.username
-          });
-          // update the state to redirect to home
-          this.setState({
-            redirectTo: "/"
-          });
-        }
-      })
-      .catch(error => {
-        console.log("login error: ");
-        console.log(error);
-      });
+    axios.post("http://localhost:3000/api/login", this.state).then(result => {
+      if (result.data.error) {
+        return this.setState({ error: result.data.message });
+      }
+      if (result.data.error) {
+        return this.setState({ valerrors: result.data.errors });
+      }
+      return (window.location = "/mainpage");
+    });
   }
-
   render() {
-    if (this.state.redirectTo) {
-      return <Redirect to={{ pathname: this.state.redirectTo }} />;
-    } else {
-      return (
-        <div>
-          <form onSubmit={this.handleSubmit}>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              value={this.state.username}
-              onChange={this.handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={this.state.password}
-              onChange={this.handleChange}
-              required
-            />
+    return (
+      <div>
+        {this.state.error && <p>{this.state.error}</p>}
+        <form onSubmit={this.submitHandler}>
+          {this.state.valerrors && this.state.username && (
+            <p>{this.state.valerrors.username.msg}</p>
+          )}
+          <input
+            onChange={this.changeHandler}
+            type="text"
+            placeholder="username"
+            name="username"
+            id="username"
+          />{" "}
+          <br />
+          {this.state.valerrors && this.state.password && (
+            <p>{this.state.valerrors.password.msg}</p>
+          )}
+          <input
+            onChange={this.changeHandler}
+            type="password"
+            placeholder="password"
+            name="password"
+            id="password"
+          />{" "}
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+        <br />
 
-            <button type="submit">Login</button>
-          </form>
-        </div>
-      );
-    }
+        <br />
+      </div>
+    );
   }
 }
 

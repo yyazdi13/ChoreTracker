@@ -4,98 +4,82 @@ import axios from "axios";
 class Register extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       username: "",
       password: "",
-      role: "",
-      confirmPassword: ""
+      passwordconf: "",
+      userdata: null,
+      success: false
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
+    this.submithandler = this.submithandler.bind(this);
   }
-  handleChange(event) {
+  changeHandler(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
-  handleSubmit(event) {
-    alert("A new user was submitted: " + this.state.username);
-    console.log("register handleSubmit, username: ");
-    console.log(this.state.username);
+  submithandler(event) {
     event.preventDefault();
-
-    //New Line of Code
-    const { username, password, role } = this.state;
-    const user = { username, password, role };
-    this.props.isloading();
-    this.props.register(user);
-
-    //request to server to add a new username/password
     axios
-      .post("/user/register", {
-        username: this.state.username,
-        password: this.state.password,
-        password_confirmation: this.state.password_confirmation,
-        role: this.state.role
-      })
-      .then(response => {
-        console.log(response);
-        if (!response.data.errmsg) {
-          console.log("successful registration");
-          this.setState({
-            //redirect to login page
-            redirectTo: "/login"
-          });
-        } else {
-          console.log("username already taken");
+      .post("http://localhost:3000/api/register", this.state)
+      .then(result => {
+        if (result.data.errors) {
+          return this.setState(result.data);
         }
-      })
-      .catch(error => {
-        console.log("signup error: ");
-        console.log(error);
+        //once user fixes errors remove the errors and set the user's data
+        return this.setState({
+          userdata: result.data,
+          errors: null,
+          success: true
+        });
       });
   }
-
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        {this.state.success && <p>You are now registered!</p>}
+        <form onSubmit={this.submithandler}>
           <input
-            id="username"
             type="text"
-            name="username"
             placeholder="Username"
-            value={this.state.username}
-            onChange={this.handleChange}
+            onChange={this.changeHandler}
+            name="username"
+            id="usernamereq"
           />
+          {this.state.errors && this.state.errors.username && (
+            <p>{this.state.errors.username.msg}</p> //If left blank shows the error - username required
+          )}
 
+          <br />
           <input
             type="password"
-            name="password"
             placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleChange}
+            onChange={this.changeHandler}
+            name="password"
+            id="passwordreq"
           />
+          {this.state.errors && this.state.errors.password && (
+            <p>{this.state.errors.password.msg}</p> //If left blank shows the error that password is required
+          )}
+          <br />
           <input
             type="password"
-            name="password_confirmation"
-            placeholder="Password confirmation"
-            value={this.state.password_confirmation}
-            onChange={this.handleChange}
+            placeholder="Password Confirmation"
+            onChange={this.changeHandler}
+            name="passwordconf"
+            id="passwordconf"
           />
-
-          <input
-            type="text"
-            name="role"
-            placeholder="role - Parent or Child"
-            value={this.state.role}
-            onChange={this.handleChange}
-          />
-
-          <button type="submit">Register</button>
+          {this.state.errors && this.state.errors.passwordconf && (
+            <p>{this.state.errors.passwordconf.msg}</p> //If left blank shows the error password confirmationn required/
+            //and if it does not match the password an error appears saying it doesn't match
+          )}
+          <br />
+          <button type="submit">Submit</button>
         </form>
+        <br />
+
+        <br />
       </div>
     );
   }
