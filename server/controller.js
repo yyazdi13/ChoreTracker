@@ -43,8 +43,14 @@ module.exports = function(app) {
     })
   ];
 
+  //Routes
+  app.post("/api/register", regValidation, register);
+  app.get("/", (req, res) => res.json("need a connection"));
+  app.post("/api/login", logValidation, loginUser);
+
   //Check the validation
   function register(req, res) {
+    console.log(req.body);
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.send({ errors: errors.mapped() });
@@ -59,9 +65,6 @@ module.exports = function(app) {
       })
       .catch(err => res.send(err));
   }
-
-  app.post("/api/register", regValidation, register);
-  app.get("/", (req, res) => res.json("need a connection"));
 };
 
 //user login
@@ -81,28 +84,27 @@ function loginUser(req, res) {
   if (!errors.isEmpty()) {
     return res.send({ errors: errors.mapped() });
   }
+
   User.findOne({
-    username: req.body.username
+    user: req.body.username
   })
     .then(function(user) {
       if (!user) {
         return res.send({ error: true, message: "User does not exist" });
       }
-      if (!user.comparePassword(req.body.password, user.password)) {
+      if (!username.comparePassword(req.body.password, username.password)) {
+        console.log(req.body);
         return res.send({ error: true, message: "Wrong password" });
       }
       req.session.user = user;
       req.session.isLoggedIn = true;
-      return res.send({ message: "You are signed in " });
       res.send(user);
+      return res.send({ message: "You are signed in " });
     })
     .catch(function(error) {
       console.log(error);
     });
 }
-
-app.post("/api/login", logValidation, loginUser);
-
 function isLoggedIn(req, res, next) {
   if (req.session.isLoggedIn) {
     res.send(true);

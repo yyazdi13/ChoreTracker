@@ -21,23 +21,22 @@ class Register extends Component {
   }
   submithandler(event) {
     event.preventDefault();
-    axios
-      .post("http://localhost:3000/api/register", this.state)
-      .then(result => {
-        if (result.data.errors) {
-          return this.setState(result.data);
-        }
-        //once user fixes errors remove the errors and set the user's data
-        return this.setState({
-          userdata: result.data,
-          errors: null,
-          success: true
-        });
+    axios.post("/api/register", this.state).then(result => {
+      if (result.data.errors) {
+        return this.setState(result.data);
+      }
+      //once user fixes errors remove the errors and set the user's data
+      return this.setState({
+        userdata: result.data,
+        errors: null,
+        success: true
       });
+    });
   }
   render() {
     return (
       <div>
+        <h3>Register</h3>
         {this.state.success && <p>You are now registered!</p>}
         <form onSubmit={this.submithandler}>
           <input

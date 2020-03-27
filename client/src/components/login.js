@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+//import { cookie } from "express-validator";
+//import { response } from "express";
 axios.defaults.withCredentials = true;
 
 class Login extends Component {
@@ -21,19 +23,22 @@ class Login extends Component {
   }
   submitHandler(event) {
     event.preventDefault();
-    axios.post("http://localhost:3000/api/login", this.state).then(result => {
+
+    axios.post("/api/login", this.state).then(result => {
       if (result.data.error) {
         return this.setState({ error: result.data.message });
       }
       if (result.data.error) {
         return this.setState({ valerrors: result.data.errors });
       }
+
       return (window.location = "/mainpage");
     });
   }
   render() {
     return (
       <div>
+        <h3>Login</h3>
         {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.submitHandler}>
           {this.state.valerrors && this.state.username && (

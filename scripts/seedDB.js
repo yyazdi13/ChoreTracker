@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const db = require("../database/models/user");
+const db = require("../server/models/user");
 
 //This file inserts users
 
@@ -17,7 +17,7 @@ const userSeed = [
   }
 ];
 
-User.deleteMany({})
+db.User.remove({})
   .then(() => User.collection.insertMany(userSeed))
   .then(data => {
     console.log(data.result.n + " records inserted!");

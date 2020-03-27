@@ -6,7 +6,7 @@ mongoose.promise = Promise;
 
 //Create the schema
 const UserSchema = new Schema({
-  _id: Schema.Types.ObjectId,
+  id: Schema.ObjectId,
 
   username: String,
 
