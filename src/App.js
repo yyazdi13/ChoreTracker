@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import List from './Components/Rewards/Rewards';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import axios from 'axios';
+
 
 function App() {
+  const [info, setInfo] = useState([])
+  const array = [];
+  useEffect(() => {
+    axios.get('/save')
+    .then((response)=>{
+      response.data.map((item) => {const data = item.reward;
+        array.push(data);
+      })
+      setInfo(array);
+    })
+    .catch(() =>{
+      console.log('error ')
+    })
+  }, [])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Router>
+    <div>
+        <Switch>
+          <Route exact path={"/reward"}>
+          <h3>{info.map(i => <List item={i}/>)}</h3>
+          </Route>
+        </Switch>
     </div>
+    </Router>
   );
 }
 

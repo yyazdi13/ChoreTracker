@@ -8,6 +8,7 @@ mongoose.set("useUnifiedTopology", true);
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/ChoreLogin", {
   useNewUrlParser: true,
   useFindAndModify: false
+
 });
 
 //your local database url
@@ -28,4 +29,10 @@ err => {
 };
 //);
 
-module.exports = mongoose.connection;
+module.exports = 
+  {Reward: require('../database/models/rewards'),
+   Earnings: require('../database/models/earnings'),
+   Chore: require('../database/models/chores'),
+   User: require('../database/models/user')
+}
+;

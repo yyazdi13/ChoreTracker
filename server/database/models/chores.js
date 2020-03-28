@@ -8,13 +8,13 @@ const ChoreSchema = new Schema({
     required: true
   },
   amount: {
-    type: Decimal,
+    type: Number,
     required: true
   },
   done: {
-    type: Bool,
+    type: Boolean,
     required: true
   }
 });
 
-module.exports = Chore = mongoose.Schema("chores", ChoreSchema);
+module.exports = Chore = mongoose.model("chores", ChoreSchema);

@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 
 const earningsSchema = new Schema({
   current: {
-    type: decimal
+    type: Number
   },
 
   saved: {
-    type: decimal
+    type: Number
   }
 });
 
-module.exports = Earnings = mongoose.Schema("earnings", earningsSchema);
+module.exports = Earnings = mongoose.model("earnings", earningsSchema);

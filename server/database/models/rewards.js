@@ -7,8 +7,8 @@ const rewardSchema = new Schema({
   },
 
   chosen: {
-    type: bool
+    type: Boolean
   }
 });
 
-module.exports = Reward = mongoose.Schema("rewards", rewardSchema);
+module.exports = Reward = mongoose.model("rewards", rewardSchema);
