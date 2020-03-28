@@ -35,11 +35,12 @@ module.exports = function(app) {
       return value;
     }),
 
-    check("username").custom(async value => {
-      const user = await User.findOne({ username: value });
-      if (user) {
-        throw new Error("This username already exist");
-      }
+    check("username").custom(value => {
+      return User.findOne({ username: value }).then(function(user) {
+        if (user) {
+          throw new Error("This username already exist");
+        }
+      });
     })
   ];
 
@@ -92,7 +93,7 @@ function loginUser(req, res) {
       if (!user) {
         return res.send({ error: true, message: "User does not exist" });
       }
-      if (!username.comparePassword(req.body.password, username.password)) {
+      if (!user.comparePassword(req.body.password, user.password)) {
         console.log(req.body);
         return res.send({ error: true, message: "Wrong password" });
       }
