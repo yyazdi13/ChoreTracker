@@ -36,7 +36,7 @@ class Register extends Component {
   render() {
     return (
       <div>
-        <h3>Register</h3>
+        <h3>Register </h3>
         {this.state.success && <p>You are now registered!</p>}
         <form onSubmit={this.submithandler}>
           <input
@@ -74,7 +74,9 @@ class Register extends Component {
             //and if it does not match the password an error appears saying it doesn't match
           )}
           <br />
-          <button type="submit">Submit</button>
+          <button type="submit" style={{ backgroundColor: "green" }}>
+            Submit
+          </button>
         </form>
         <br />
 

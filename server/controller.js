@@ -85,11 +85,12 @@ function loginUser(req, res) {
   if (!errors.isEmpty()) {
     return res.send({ errors: errors.mapped() });
   }
-
+  console.log(req.body);
   User.findOne({
-    user: req.body.username
+    username: req.body.username
   })
     .then(function(user) {
+      console.log("username after db query", user);
       if (!user) {
         return res.send({ error: true, message: "User does not exist" });
       }
@@ -97,9 +98,9 @@ function loginUser(req, res) {
         console.log(req.body);
         return res.send({ error: true, message: "Wrong password" });
       }
-      req.session.user = user;
-      req.session.isLoggedIn = true;
-      res.send(user);
+      //req.session.user = user;
+      //req.session.isLoggedIn = true;
+      // res.send(user);
       return res.send({ message: "You are signed in " });
     })
     .catch(function(error) {
@@ -121,7 +122,7 @@ const choreValidation = [
   check("chore")
     .not()
     .isEmpty()
-    .withMessage("Please select a chore")
+    .withMessage("Please add a chore")
 ];
 
 function addChore(req, res) {
@@ -131,7 +132,7 @@ function addChore(req, res) {
   }
   var chore = new Chore(req.body);
   if (req.session.user) {
-    chore.user = req.session.user._id;
+    chore.user = req.session.user.id;
     chore
       .save()
       .then(chore => {
@@ -139,12 +140,14 @@ function addChore(req, res) {
       })
       .catch(error => {
         res.json(error);
+        console.log(req.body.chore);
       });
   } else {
     return res.send({ error: "You are not logged in!" });
   }
 }
 app.post("/api/addchore", choreValidation, addChore);
+app.get("/api/showChores", isLoggedIn, showChores);
 
 //Find chore
 app.post("api/chore/:id", (req, res) => {
@@ -165,7 +168,7 @@ function showChores(req, res) {
       res.json(error);
     });
 }
-app.get("/api/showChores", isLoggedIn, showChores);
+//app.get("/api/showChores", isLoggedIn, showChores);
 
 //Logout
 app.get("/api/logout", (req, res) => {

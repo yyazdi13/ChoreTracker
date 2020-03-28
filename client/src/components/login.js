@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import "../App.css";
+
 //import { cookie } from "express-validator";
 //import { response } from "express";
 axios.defaults.withCredentials = true;
@@ -10,7 +12,7 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      error: null,
+      errors: null,
       valerrors: null
     };
     this.changeHandler = this.changeHandler.bind(this);
@@ -38,6 +40,9 @@ class Login extends Component {
   render() {
     return (
       <div>
+        <header style={{ backgroundColor: "lightblue" }}>
+          ChoreTracker Login/Registration
+        </header>
         <h3>Login</h3>
         {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.submitHandler}>
@@ -63,7 +68,9 @@ class Login extends Component {
             id="password"
           />{" "}
           <br />
-          <button type="submit">Submit</button>
+          <button type="submit" style={{ backgroundColor: "green" }}>
+            Submit
+          </button>
         </form>
         <br />
 
