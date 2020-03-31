@@ -1,21 +1,21 @@
 import React from 'react';
 import './App.css';
-import Nav from "./components/Nav"
-import ChoreCard from "./components/ChoreCard"
-import kids from "./kidsfrontEnd.html/kidsfrontEnd"
-
+import Home from "./pages/Home"
+import KidsPage from "./pages/KidsPage"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-      <div className="bg">
-      <Nav />
-      <ChoreCard />
-      <Kids/>
-      </div>
+    <Router>
+      <div>
         
-    </div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/kids" component={KidsPage} />
    
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
