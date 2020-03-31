@@ -31,18 +31,20 @@ export default function InteractiveList(props) {
   
 
   return (
+    <div style={{background: "cadetblue", border: '1px solid sienna', margin: "5px"}}>
     <div className={classes.root}>
       <FormGroup row>
         <List>
           <ListItem>
             <ul>
            <li> {props.item}
-          <Checkbox/>
+          <Checkbox onClick={function(){console.log("click")}}/>
           </li>
           </ul>
           </ListItem>
         </List>
       </FormGroup>
+    </div>
     </div>
   )
 }
