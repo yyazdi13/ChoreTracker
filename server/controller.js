@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const expressValidator = require("express-validator");
+//const session = require("express-session");
 var { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const express = require("express");
@@ -48,6 +49,7 @@ module.exports = function(app) {
   app.post("/api/register", regValidation, register);
   app.get("/", (req, res) => res.json("need a connection"));
   app.post("/api/login", logValidation, loginUser);
+  app.post("/api/addchore", choreValidation, addChore);
 
   //Check the validation
   function register(req, res) {
@@ -98,10 +100,10 @@ function loginUser(req, res) {
         console.log(req.body);
         return res.send({ error: true, message: "Wrong password" });
       }
-      //req.session.user = user;
-      //req.session.isLoggedIn = true;
-      // res.send(user);
-      return res.send({ message: "You are signed in " });
+      req.session.user = user;
+      req.session.isLoggedIn = true;
+      //res.send(user);
+      return res.send({ message: "You are signed in" });
     })
     .catch(function(error) {
       console.log(error);
@@ -126,10 +128,15 @@ const choreValidation = [
 ];
 
 function addChore(req, res) {
+  console.log(req.body);
   var errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.send({ errors: errors.mapped() });
   }
+
+  //req.session.user = user;
+  //req.session.isLoggedIn = true;
+
   var chore = new Chore(req.body);
   if (req.session.user) {
     chore.user = req.session.user.id;
@@ -140,13 +147,12 @@ function addChore(req, res) {
       })
       .catch(error => {
         res.json(error);
-        console.log(req.body.chore);
       });
   } else {
     return res.send({ error: "You are not logged in!" });
   }
 }
-app.post("/api/addchore", choreValidation, addChore);
+
 app.get("/api/showChores", isLoggedIn, showChores);
 
 //Find chore
@@ -168,7 +174,6 @@ function showChores(req, res) {
       res.json(error);
     });
 }
-//app.get("/api/showChores", isLoggedIn, showChores);
 
 //Logout
 app.get("/api/logout", (req, res) => {

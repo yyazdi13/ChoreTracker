@@ -34,7 +34,6 @@ app.use(
     credentials: true //allow settings of cookies
   })
 );
-controller(app);
 
 app.use(
   session({
@@ -44,6 +43,7 @@ app.use(
     cookie: { maxAge: 60000 * 30 }
   })
 );
+controller(app);
 
 // Send every request to the React app
 // Define any API routes before this runs

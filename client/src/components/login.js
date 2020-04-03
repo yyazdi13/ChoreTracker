@@ -34,7 +34,7 @@ class Login extends Component {
         return this.setState({ valerrors: result.data.errors });
       }
 
-      return (window.location = "/mainpage");
+      return (window.location = "/chorepage");
     });
   }
   render() {
