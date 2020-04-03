@@ -8,7 +8,8 @@ const controller = require("./server/controller");
 const PORT = process.env.PORT || 3001;
 
 const app = express();
-
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(express.json());
 

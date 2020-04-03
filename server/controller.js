@@ -1,4 +1,5 @@
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const expressValidator = require("express-validator");
 var { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -7,7 +8,8 @@ const User = require("./models/user");
 const Chore = require("./models/chore");
 const Reward = require("./models/rewards");
 const app = express();
-
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 //Validate username and password
 module.exports = function(app) {
   const regValidation = [
@@ -54,9 +56,17 @@ module.exports = function(app) {
       if (err) throw err;
       else res.json(data);
     })
-  })
-  app.post("/addReward", (req,res) => {
-    Reward.create({reward: req.body.reward}, (err, data) => {
+  });
+  app.get("/user", (req, res) => {
+    User.findOne({username: req.query.q})
+    .then((response)=>{
+      res.send(response);
+    })
+    .catch(err => res.status(422).end());
+  });
+  app.post("/api/addReward", (req,res) => {
+    console.log(req.body);
+    Reward.create(req.body, (err, data) => {
       if (err) throw err;
       else res.json(data);
     })

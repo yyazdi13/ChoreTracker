@@ -2,12 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-// import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
-// import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import Avatar from '@material-ui/core/Avatar';
-// import IconButton from '@material-ui/core/IconButton';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -31,19 +25,21 @@ export default function InteractiveList(props) {
   
 
   return (
-    <div style={{background: "cadetblue", border: '1px solid sienna', margin: "5px"}}>
+    <div style={{display: "flex", flexDirection: "column", alignItems: "flexStart"}}>
+    <div style={{background: "cadetblue", border: '1px solid sienna', margin: "5px", marginLeft: "25px", borderRadius: '2pc', width: "400px", height: "60px", boxShadow: "2px 2px 2px black"}}>
     <div className={classes.root}>
       <FormGroup row>
         <List>
           <ListItem>
             <ul>
            <li> {props.item}
-          <Checkbox onClick={function(){console.log("click")}}/>
+          <Checkbox onClick={() => props.handleCheck(props.id)}/>
           </li>
           </ul>
           </ListItem>
         </List>
       </FormGroup>
+    </div>
     </div>
     </div>
   )

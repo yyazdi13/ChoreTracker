@@ -15,6 +15,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -191,6 +192,7 @@ function Nav() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+              <Button><Link to="/reward">Rewards</Link></Button>
               <Button>Login</Button>
               <Button>Log Out</Button>
             <IconButton aria-label="show 4 new mails" color="inherit">
