@@ -47,4 +47,5 @@ function ChoreCard() {
     </Card>
   );
 }
+
 export default ChoreCard;

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Chore from "./index";
-//import Addchore from "../../pages/addchore";
 
 class Chorepage extends Component {
   constructor(props) {

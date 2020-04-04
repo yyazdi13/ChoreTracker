@@ -3,7 +3,7 @@ const db = require("../server/models/user");
 
 //This file inserts users
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/ChoreLogin");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/ChoreTracker");
 const userSeed = [
   {
     username: "PHarris",
@@ -17,8 +17,8 @@ const userSeed = [
   }
 ];
 
-db.User.remove({})
-  .then(() => User.collection.insertMany(userSeed))
+db.remove({})
+  .then(() => db.collection.insertMany(userSeed))
   .then(data => {
     console.log(data.result.n + " records inserted!");
     process.exit(0);

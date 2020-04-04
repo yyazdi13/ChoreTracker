@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,6 +15,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 //import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -195,7 +195,7 @@ function Nav() {
             <Link to="/addchore" style={{ marginRight: 10 }}>
               Add Chore
             </Link>
-            <Link to="/rewards" style={{ marginRight: 10 }}>
+            <Link to="/reward" style={{ marginRight: 10 }}>
               Rewards
             </Link>
             <Link to="/earnings" style={{ marginRight: 10 }}>
