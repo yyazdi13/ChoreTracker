@@ -9,9 +9,8 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(express.json());
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
@@ -23,9 +22,6 @@ mongoose.connect(
   { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true },
   () => {
     console.log("successfully connected to the database");
-
-    //.then(console.log("MongoDB connected"))
-    // .catch(err => console.log(err))
   }
 );
 
@@ -36,7 +32,6 @@ app.use(
     credentials: true //allow settings of cookies
   })
 );
-controller(app);
 
 app.use(
   session({
@@ -46,16 +41,8 @@ app.use(
     cookie: { maxAge: 60000 * 30 }
   })
 );
-
-// Send every request to the React app
-// Define any API routes before this runs
-//app.get("*", function(req, res) {
-// res.sendFile(path.join(__dirname, "./client/build/index.html"));
-//});
-
+controller(app);
 
 app.listen(PORT, function() {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
-
-//app.listen(3001, () => console.log("listening"));

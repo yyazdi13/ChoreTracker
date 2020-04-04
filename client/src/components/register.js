@@ -36,10 +36,27 @@ class Register extends Component {
   render() {
     return (
       <div>
-        <h3>Register </h3>
+        <h3
+          style={{
+            display: "flex",
+            marginLeft: "30px",
+            fontSize: "20px",
+            fontFamily: "sans-serif"
+          }}
+        >
+          Register{" "}
+        </h3>
         {this.state.success && <p>You are now registered!</p>}
         <form onSubmit={this.submithandler}>
           <input
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginLeft: "30px",
+              border: "2px solid",
+              height: "30px",
+              fontSize: "20px"
+            }}
             type="text"
             placeholder="Username"
             onChange={this.changeHandler}
@@ -47,11 +64,19 @@ class Register extends Component {
             id="usernamereq"
           />
           {this.state.errors && this.state.errors.username && (
-            <p>{this.state.errors.username.msg}</p> //If left blank shows the error - username required
+            <p style={{ color: "red" }}>{this.state.errors.username.msg}</p> //If left blank shows the error - username required
           )}
 
           <br />
           <input
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginLeft: "30px",
+              border: "2px solid",
+              height: "30px",
+              fontSize: "20px"
+            }}
             type="password"
             placeholder="Password"
             onChange={this.changeHandler}
@@ -59,10 +84,18 @@ class Register extends Component {
             id="passwordreq"
           />
           {this.state.errors && this.state.errors.password && (
-            <p>{this.state.errors.password.msg}</p> //If left blank shows the error that password is required
+            <p style={{ color: "red" }}>{this.state.errors.password.msg}</p> //If left blank shows the error that password is required
           )}
           <br />
           <input
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginLeft: "30px",
+              border: "2px solid",
+              height: "30px",
+              fontSize: "20px"
+            }}
             type="password"
             placeholder="Password Confirmation"
             onChange={this.changeHandler}
@@ -70,11 +103,18 @@ class Register extends Component {
             id="passwordconf"
           />
           {this.state.errors && this.state.errors.passwordconf && (
-            <p>{this.state.errors.passwordconf.msg}</p> //If left blank shows the error password confirmationn required/
+            <p style={{ color: "red" }}>{this.state.errors.passwordconf.msg}</p> //If left blank shows the error password confirmationn required/
             //and if it does not match the password an error appears saying it doesn't match
           )}
           <br />
-          <button type="submit" style={{ backgroundColor: "green" }}>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "green",
+              marginLeft: "30px",
+              height: "33px"
+            }}
+          >
             Submit
           </button>
         </form>

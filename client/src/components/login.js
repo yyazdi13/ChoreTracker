@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import "../App.css";
 
-//import { cookie } from "express-validator";
-//import { response } from "express";
 axios.defaults.withCredentials = true;
 
 class Login extends Component {
@@ -34,22 +32,47 @@ class Login extends Component {
         return this.setState({ valerrors: result.data.errors });
       }
 
-      return (window.location = "/mainpage");
+      return (window.location = "/chorepage");
     });
   }
   render() {
     return (
       <div>
-        <header style={{ backgroundColor: "lightblue" }}>
-          ChoreTracker Login/Registration
+        <header
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            fontSize: "30px",
+            fontFamily: "sans-serif"
+          }}
+        >
+          Chore Tracker Login/Registration
         </header>
-        <h3>Login</h3>
-        {this.state.error && <p>{this.state.error}</p>}
+        <br></br>
+        <h3
+          style={{
+            display: "flex",
+            marginLeft: "30px",
+            fontSize: "20px",
+            fontFamily: "sans-serif"
+          }}
+        >
+          Login
+        </h3>
+        {this.state.error && <p style={{ color: "red" }}>{this.state.error}</p>}
         <form onSubmit={this.submitHandler}>
           {this.state.valerrors && this.state.username && (
             <p>{this.state.valerrors.username.msg}</p>
           )}
           <input
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginLeft: "30px",
+              border: "2px solid",
+              height: "30px",
+              fontSize: "20px"
+            }}
             onChange={this.changeHandler}
             type="text"
             placeholder="username"
@@ -58,9 +81,17 @@ class Login extends Component {
           />{" "}
           <br />
           {this.state.valerrors && this.state.password && (
-            <p>{this.state.valerrors.password.msg}</p>
+            <p style={{ color: "red" }}>{this.state.valerrors.password.msg}</p>
           )}
           <input
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginLeft: "30px",
+              border: "2px solid",
+              height: "30px",
+              fontSize: "20px"
+            }}
             onChange={this.changeHandler}
             type="password"
             placeholder="password"
@@ -68,12 +99,17 @@ class Login extends Component {
             id="password"
           />{" "}
           <br />
-          <button type="submit" style={{ backgroundColor: "green" }}>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "green",
+              marginLeft: "30px",
+              height: "33px"
+            }}
+          >
             Submit
           </button>
         </form>
-        <br />
-
         <br />
       </div>
     );

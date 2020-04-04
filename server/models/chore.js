@@ -7,8 +7,9 @@ const ChoreSchema = new Schema({
 
   owner: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "User"
+      type: Schema.Types.Mixed,
+      ref: "User",
+      require: false
     }
   ],
 

@@ -1,6 +1,7 @@
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const expressValidator = require("express-validator");
+//const session = require("express-session");
 var { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const express = require("express");
@@ -9,7 +10,8 @@ const Chore = require("./models/chore");
 const Reward = require("./models/rewards");
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
+
 //Validate username and password
 module.exports = function(app) {
   const regValidation = [
@@ -23,10 +25,7 @@ module.exports = function(app) {
       .withMessage("Password is required")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
-    //check("role")
-    // .not()
-    //.isEmpty()
-    // .withMessage("Role is required, enter parent or child"),
+
     check(
       "passwordconf",
       "Password confirmation is required and should be the same as the password"
@@ -41,7 +40,7 @@ module.exports = function(app) {
     check("username").custom(value => {
       return User.findOne({ username: value }).then(function(user) {
         if (user) {
-          throw new Error("This username already exist");
+          throw new Error("This username already exists");
         }
       });
     })
@@ -51,26 +50,28 @@ module.exports = function(app) {
   app.post("/api/register", regValidation, register);
   app.get("/", (req, res) => res.json("need a connection"));
   app.post("/api/login", logValidation, loginUser);
-  app.get("/save", (req,res) => {
-    Reward.find({}, (err, data)=> {
+  app.post("/api/addchore", choreValidation, addChore);
+  app.get("/api/addchore", isLoggedIn, addChore);
+  app.get("/save", (req, res) => {
+    Reward.find({}, (err, data) => {
       if (err) throw err;
       else res.json(data);
-    })
+    });
   });
   app.get("/user", (req, res) => {
-    User.findOne({username: req.query.q})
-    .then((response)=>{
-      res.send(response);
-    })
-    .catch(err => res.status(422).end());
+    User.findOne({ username: req.query.q })
+      .then(response => {
+        res.send(response);
+      })
+      .catch(err => res.status(422).end());
   });
-  app.post("/api/addReward", (req,res) => {
+  app.post("/api/addReward", (req, res) => {
     console.log(req.body);
     Reward.create(req.body, (err, data) => {
       if (err) throw err;
       else res.json(data);
-    })
-  })
+    });
+  });
 
   //Check the validation
   function register(req, res) {
@@ -121,10 +122,10 @@ function loginUser(req, res) {
         console.log(req.body);
         return res.send({ error: true, message: "Wrong password" });
       }
-      //req.session.user = user;
-      //req.session.isLoggedIn = true;
-      // res.send(user);
-      return res.send({ message: "You are signed in " });
+      req.session.user = user;
+      req.session.isLoggedIn = true;
+      //res.send(user);
+      return res.send({ message: "You are signed in" });
     })
     .catch(function(error) {
       console.log(error);
@@ -149,10 +150,12 @@ const choreValidation = [
 ];
 
 function addChore(req, res) {
+  console.log(req.body);
   var errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.send({ errors: errors.mapped() });
   }
+
   var chore = new Chore(req.body);
   if (req.session.user) {
     chore.user = req.session.user.id;
@@ -163,14 +166,11 @@ function addChore(req, res) {
       })
       .catch(error => {
         res.json(error);
-        console.log(req.body.chore);
       });
   } else {
     return res.send({ error: "You are not logged in!" });
   }
 }
-app.post("/api/addchore", choreValidation, addChore);
-app.get("/api/showChores", isLoggedIn, showChores);
 
 //Find chore
 app.post("api/chore/:id", (req, res) => {
@@ -183,7 +183,7 @@ app.post("api/chore/:id", (req, res) => {
 ///Get all chores
 function showChores(req, res) {
   Chore.find()
-    .populate("user", ["username"])
+    .populate("owner", ["username"])
     .then(chore => {
       res.json(chore);
     })
@@ -191,12 +191,9 @@ function showChores(req, res) {
       res.json(error);
     });
 }
-//app.get("/api/showChores", isLoggedIn, showChores);
 
 //Logout
 app.get("/api/logout", (req, res) => {
   req.session.destroy();
   res.send({ message: "Logged out" });
 });
-
-
