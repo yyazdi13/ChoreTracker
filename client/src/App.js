@@ -17,7 +17,9 @@ class App extends Component {
         <Nav />
 
         <Switch>
+          <div className="backdrop">
           <Route exact path="/" component={Home} />
+        
 
           <Route exact path="/chorepage" component={ChoreCard} />
           <Route exact path="/addchore" component={AddChore} />
@@ -26,6 +28,7 @@ class App extends Component {
             <Cart />
           </Route>
           <Route exact path={"/"}></Route>
+          </div>
         </Switch>
         <div className="bg"></div>
       </Router>
