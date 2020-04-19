@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const Reward = require("./server/models/rewards");
+const path = require("path");
 const cors = require("cors");
 const controller = require("./server/controller");
 const PORT = process.env.PORT || 3001;
@@ -29,7 +30,7 @@ app.use(
   cors({
     origin: ["http://localhost:3001"],
     methods: ["GET", "HEAD", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
-    credentials: true //allow settings of cookies
+    credentials: true, //allow settings of cookies
   })
 );
 
@@ -38,11 +39,19 @@ app.use(
     secret: "foo",
     saveUninitialized: true,
     resave: true,
-    cookie: { maxAge: 60000 * 30 }
+    cookie: { maxAge: 60000 * 30 },
   })
 );
 controller(app);
 
-app.listen(PORT, function() {
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html")); // realative path
+  });
+}
+
+app.listen(PORT, function () {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
