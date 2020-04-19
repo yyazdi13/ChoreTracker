@@ -1,5 +1,18 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+ChoreTracker
+
+A full-stack web application created to help parents and their children to organize chores. Many times children lose track of who's turn it is to complete an assigned chore. At the same time parents want to teach their children that we work to earn money. It isn't just given to you when get good grades in school.
+
+ChoreTracker allows chores to be assigned to a child while also displaying the amount to be earned for completing that chore. Once the chore is completed the child simply clicks "Done". The child can choose to cash out thier earnings or save for later use; like purchasing their favorite toy or video game. As a bonus the child can choose a reward such as more game time, one-on-one time with Mom or Dad.
+
+Technolgies Used:
+1. React
+2. ExpressJs
+3. MongoDb
+4. BcryptJs
+5. Material -UI
+
 ## Available Scripts
 
 In the project directory, you can run:
