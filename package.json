@@ -8,7 +8,8 @@
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "seed": "node scripts/seedDB.js",
-    "client": "cd client && npm run start"
+    "client": "cd client && npm run start",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -36,9 +37,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0"
   },
-  
   "proxy": "http://localhost:3001",
-  
   "eslintConfig": {
     "extends": "react-app"
   }
