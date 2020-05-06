@@ -16,6 +16,7 @@ class Addchore extends Component {
       chore: "",
       owner: "",
       amount: "",
+      chores: [],
       done: false,
       choredata: null,
       success: false
@@ -25,6 +26,7 @@ class Addchore extends Component {
     this.submithandler = this.submithandler.bind(this);
     this.getChores = this.getChores.bind(this);
   }
+  componentDidMount(){this.getChores()}
 
   changeHandler(event) {
     this.setState({
@@ -47,8 +49,14 @@ class Addchore extends Component {
   }
   getChores() {
     axios
-      .get("/api/addchore")
-      .then(chores => this.setState({ chores: chores.data }));
+      .get("/api/findChores")
+      .then(res => {
+        for (let i = 0; i < res.data.length; i++){
+          var c = res.data[i].chore;
+          this.setState({chores: [...this.state.chores, c]})          
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   render() {
@@ -61,14 +69,14 @@ class Addchore extends Component {
             fontWeight: "bold"
           }}
         >
-          {/* Add Chores{" "} */}
+          Add Chores{" "}
         </h2>
         {this.state.success && (
           <p>
             You have added the {this.state.chore} chore for {this.state.owner}
           </p>
         )}
-        {/* <form
+        <form
           style={{
             display: "flex",
             justifyContnent: "center"
@@ -145,7 +153,8 @@ class Addchore extends Component {
           >
             Submit
           </Button>
-        </form> */}
+        </form>
+          <h3>chores: {this.state.chores.map(i => <p>{i}</p>)}</h3>
         <ViewChore/>
       </div>
     );

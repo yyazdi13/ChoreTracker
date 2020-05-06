@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
-    "seed": "node scripts/seedDB.js",
-    "client": "cd client && npm run start",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node server.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently -n 'server,client' -c 'red,green' \"nodemon server.js\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -23,14 +24,9 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "express-validator": "^6.4.0",
-    "http-proxy-middleware": "^1.0.3",
     "mongoose": "^5.9.5",
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
-  },
-  "proxy": "http://localhost:3001",
-  "eslintConfig": {
-    "extends": "react-app"
   }
 }

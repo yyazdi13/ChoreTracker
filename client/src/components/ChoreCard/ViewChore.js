@@ -62,9 +62,9 @@ export default function ViewChore(){
         <div>
             <div>
             <ul>
-            {chores.map(i => (
+            {/* {chores.map(i => (
             <li>{i}</li>
-          ))}
+          ))} */}
             </ul>
             </div>
         <h2
