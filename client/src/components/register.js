@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Button from "@material-ui/core/Button";
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import LockIcon from '@material-ui/icons/Lock';
 
 class Register extends Component {
   constructor(props) {
@@ -38,7 +43,7 @@ class Register extends Component {
       <div>
         <h3
           style={{
-            display: "flex",
+            textAlign: "center",
             marginLeft: "30px",
             fontSize: "20px",
             fontFamily: "sans-serif"
@@ -47,16 +52,27 @@ class Register extends Component {
           Register{" "}
         </h3>
         {this.state.success && <p>You are now registered!</p>}
-        <form onSubmit={this.submithandler}>
-          <input
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginLeft: "30px",
-              border: "2px solid",
-              height: "30px",
-              fontSize: "20px"
-            }}
+        <div style={{display: "flex", justifyContent: "center"}}>
+        <form 
+        style={{
+          border:"1px solid grey",
+          boxShadow: " 1px 1px black", 
+          width:"300px", 
+          padding:"10px", 
+          textAlign:"center"
+        }}
+        onSubmit={this.submithandler}>
+          <Input
+           id="input-with-icon-adornment"
+           startAdornment={
+           <InputAdornment position="start">
+             <AccountCircle />
+           </InputAdornment>}
+         style={{
+           marginLeft: "30px",
+           marginBottom: "10px",
+           height: "30px"
+         }}
             type="text"
             placeholder="Username"
             onChange={this.changeHandler}
@@ -68,14 +84,16 @@ class Register extends Component {
           )}
 
           <br />
-          <input
+          <Input
+              id="input-with-icon-adornment"
+              startAdornment={
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>}
             style={{
-              display: "flex",
-              justifyContent: "center",
               marginLeft: "30px",
-              border: "2px solid",
-              height: "30px",
-              fontSize: "20px"
+              marginBottom: "10px",
+              height: "30px"
             }}
             type="password"
             placeholder="Password"
@@ -87,14 +105,16 @@ class Register extends Component {
             <p style={{ color: "red" }}>{this.state.errors.password.msg}</p> //If left blank shows the error that password is required
           )}
           <br />
-          <input
+          <Input
+              id="input-with-icon-adornment"
+              startAdornment={
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>}
             style={{
-              display: "flex",
-              justifyContent: "center",
               marginLeft: "30px",
-              border: "2px solid",
-              height: "30px",
-              fontSize: "20px"
+              marginBottom: "10px",
+              height: "30px"
             }}
             type="password"
             placeholder="Password Confirmation"
@@ -107,17 +127,18 @@ class Register extends Component {
             //and if it does not match the password an error appears saying it doesn't match
           )}
           <br />
-          <button
+          <Button
             type="submit"
             style={{
-              backgroundColor: "green",
+              backgroundColor: "skyblue",
               marginLeft: "30px",
               height: "33px"
             }}
           >
             Submit
-          </button>
+          </Button>
         </form>
+        </div>
         <br />
 
         <br />

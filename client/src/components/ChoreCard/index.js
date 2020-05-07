@@ -10,14 +10,15 @@ import Switch from "../switch";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345
+    maxWidth: 345,
+    marginLeft: 20
   },
   media: {
     height: 140
   }
 });
 
-function ChoreCard() {
+function ChoreCard(props) {
   const classes = useStyles();
 
   return (
@@ -25,16 +26,13 @@ function ChoreCard() {
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Chore 1
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Laundry
+            {props.chore}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Amount: $1
+          {props.amount}
         </Button>
         <Button size="small" color="primary">
           Edit
@@ -42,7 +40,7 @@ function ChoreCard() {
         <Button size="small" color="primary">
           Delete
         </Button>
-        <Switch></Switch>
+        <Switch onClick={props.handleSwitch}></Switch>
       </CardActions>
     </Card>
   );

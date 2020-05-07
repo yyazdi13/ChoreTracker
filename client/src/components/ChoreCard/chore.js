@@ -47,10 +47,10 @@ class Chorepage extends Component {
           Logout
         </button>
         <form onSubmit={this.submitHandler}>
-          <input>
+          <input
             value={this.state.chore}
             placeholder="chore" onChange={this.changeHandler}
-            type="text" name="chore" id="chore" />
+            type="text" name="chore" id="chore" >
             <button type="submit">Submit</button>
           </input>
         </form>

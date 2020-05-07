@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../App.css";
+import Button from "@material-ui/core/Button";
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import LockIcon from '@material-ui/icons/Lock';
 
 axios.defaults.withCredentials = true;
 
@@ -51,7 +56,7 @@ class Login extends Component {
         <br></br>
         <h3
           style={{
-            display: "flex",
+            textAlign: "center",
             marginLeft: "30px",
             fontSize: "20px",
             fontFamily: "sans-serif"
@@ -60,18 +65,28 @@ class Login extends Component {
           Login
         </h3>
         {this.state.error && <p style={{ color: "red" }}>{this.state.error}</p>}
-        <form onSubmit={this.submitHandler}>
+       <div style={{display: "flex", justifyContent: "center"}}>
+        <form   
+        style={{
+          border:"1px solid grey",
+          boxShadow: " 1px 1px black", 
+          width:"300px", 
+          padding:"10px", 
+          textAlign:"center"}} 
+        onSubmit={this.submitHandler}>
           {this.state.valerrors && this.state.username && (
             <p>{this.state.valerrors.username.msg}</p>
           )}
-          <input
+          <Input
+              id="input-with-icon-adornment"
+              startAdornment={
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>}
             style={{
-              display: "flex",
-              justifyContent: "center",
               marginLeft: "30px",
-              border: "2px solid",
-              height: "30px",
-              fontSize: "20px"
+              marginBottom: "10px",
+              height: "30px"
             }}
             onChange={this.changeHandler}
             type="text"
@@ -83,14 +98,16 @@ class Login extends Component {
           {this.state.valerrors && this.state.password && (
             <p style={{ color: "red" }}>{this.state.valerrors.password.msg}</p>
           )}
-          <input
+          <Input
+              id="input-with-icon-adornment"
+              startAdornment={
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>}
             style={{
-              display: "flex",
-              justifyContent: "center",
               marginLeft: "30px",
-              border: "2px solid",
-              height: "30px",
-              fontSize: "20px"
+              marginBottom: "10px",
+              height: "30px"
             }}
             onChange={this.changeHandler}
             type="password"
@@ -99,17 +116,18 @@ class Login extends Component {
             id="password"
           />{" "}
           <br />
-          <button
+          <Button
             type="submit"
             style={{
-              backgroundColor: "green",
+              backgroundColor: "skyblue",
               marginLeft: "30px",
               height: "33px"
             }}
           >
             Submit
-          </button>
+          </Button>
         </form>
+        </div>
         <br />
       </div>
     );

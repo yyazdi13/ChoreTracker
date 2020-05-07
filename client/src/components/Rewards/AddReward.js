@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Button from "@material-ui/core/Button";
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Icon from '@material-ui/core/Icon';
 
 export default function AddReward(props) {
   const [item, setReward] = useState({ reward: "error" });
@@ -47,64 +52,43 @@ export default function AddReward(props) {
   return (
     <>
       <form style={{ display: "flex", justifyContent: "center" }}>
-        <input
-          style={{
-            margin: "5px",
-            marginTop: "10px",
-            border: "2px solid coral",
-            boxShadow: "1px 1px 1px black",
-            height: "30px",
-            fontSize: "20px",
-            background: "lightsteelblue"
-          }}
+        <Input
+          id="input-with-icon-adornment"
+          startAdornment={
+          <InputAdornment position="start">
+            <AccountCircle />
+          </InputAdornment>}
           onChange={handleUserInput}
           name="user"
           placeholder="Enter parent username"
-        ></input>
-        <button
-          style={{
-            margin: "5px",
-            marginTop: "10px",
-            border: "2px solid coral",
-            boxShadow: "1px 2px 1px black",
-            height: "33px",
-            background: "lightsteelblue",
-            fontFamily: "verdana"
-          }}
-          onClick={handleUserSubmit}
-        >
+        ></Input>
+        <Button
+          variant="contained" size="small"
+          style={{ margin: "5px" }}
+          onClick={handleUserSubmit}>
           Submit
-        </button>
+        </Button>
       </form>
       <form style={{ display: "flex", justifyContent: "center" }}>
-        <input
-          style={{
-            visibility: visibility,
-            margin: "5px",
-            border: "2px solid coral",
-            boxShadow: "1px 1px 1px black",
-            height: "30px",
-            fontSize: "20px",
-            background: "lightsteelblue"
-          }}
+        <Input
+          id="input-with-icon-adornment"
+          startAdornment={
+            <InputAdornment position="start">
+              <Icon>add_circle</Icon>
+            </InputAdornment>
+          }
+          style={{visibility: visibility}}
           onChange={handleInputChange}
           placeholder="insert reward"
           name="reward"
-        ></input>
-        <button
-          style={{
-            visibility: visibility,
-            margin: "5px",
-            border: "2px solid coral",
-            boxShadow: "1px 2px 1px black",
-            height: "33px",
-            background: "lightsteelblue",
-            fontFamily: "verdana"
-          }}
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
+        ></Input>
+        <Button 
+        variant="contained" 
+        size="small" 
+        style={{visibility:visibility, margin:"5px"}} 
+        onClick={handleSubmit}>
+        Submit
+        </Button>
       </form>
     </>
   );
