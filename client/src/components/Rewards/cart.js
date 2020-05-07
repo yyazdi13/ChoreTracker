@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import List from "./Rewards";
 import AddReward from "./AddReward";
+import Button from "@material-ui/core/Button";
 
 export default function Cart() {
   const [info, setInfo] = useState([]);
@@ -48,43 +49,40 @@ export default function Cart() {
         Choose a reward!
       </h1>
       <div style={{ display: "flex" }}>
-        <h3>
+        <div style={{
+          border: "1px solid black", 
+          width: "450px", margin:"15px", 
+          marginLeft: "20px", overflow: "auto", 
+          clear: "both", boxShadow: "2px 1px 1px 1px black", 
+          height: "300px"}}>
+        <h4>
           {info.map(i => (
             <List handleCheck={handleCheck} item={i} id={i} key={i} />
           ))}
-        </h3>
+        </h4>
+        </div>
         <div
           style={{
             overflow: "auto",
             clear: "both",
             marginTop: "20px",
-            background: "cadetblue",
-            border: "2px solid sienna",
-            borderRadius: "2pc",
-            boxShadow: "2px 2px 2px black",
+            border: "1px solid black",
+            boxShadow: "2px 3px 2px black",
             marginLeft: "55px",
             width: "500px",
-            height: "200px"
+            height: "250px"
           }}
         >
           <h2 style={{ textAlign: "center" }}>Cart</h2>
+          <Button size="small" variant="contained" style={{marginLeft:"10px"}} onClick={handleCartCheck}>
+            Reset cart
+          </Button>
           <h4>
             {cart.map(x => (
               <li style={{ marginLeft: "15px" }}>{x}</li>
             ))}
           </h4>
-          <button
-            style={{
-              margin: "5px",
-              background: "lightsteelblue",
-              border: "1px solid coral",
-              boxShadow: "1px 1px 1px black",
-              fontFamily: "verdana"
-            }}
-            onClick={handleCartCheck}
-          >
-            Reset cart
-          </button>
+          
         </div>
       </div>
     </div>

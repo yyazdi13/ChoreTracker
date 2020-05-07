@@ -72,6 +72,18 @@ module.exports = function(app) {
       else res.json(data);
     });
   });
+  app.get("/api/findChores", (req,res) => {
+    Chore.find({}, (err, data)=> {
+      if (err) throw err;
+      else res.json(data)
+    })
+  });
+  app.post("/api/postChores", (req, res) => {
+    Chore.create({chore: req.body.chore, owner: req.session.user.username, amount: req.body.amount},(err,data) =>{
+      if (err) console.log(err);
+      else res.send(data);
+    })
+  })
 
   //Check the validation
   function register(req, res) {
