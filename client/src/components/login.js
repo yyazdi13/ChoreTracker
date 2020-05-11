@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import "../App.css";
 import Button from "@material-ui/core/Button";
@@ -16,7 +17,8 @@ class Login extends Component {
       username: "",
       password: "",
       errors: null,
-      valerrors: null
+      valerrors: null,
+      redirect: null
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -37,10 +39,13 @@ class Login extends Component {
         return this.setState({ valerrors: result.data.errors });
       }
 
-      return (window.location = "/chorepage");
+      else return this.setState({redirect: "/chorepage"})
     });
   }
   render() {
+    if (this.state.redirect){
+      return <Redirect to={this.state.redirect}></Redirect>
+    }
     return (
       <div>
         <header
