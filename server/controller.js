@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require("path");
 const expressValidator = require("express-validator");
 //const session = require("express-session");
 var { check, validationResult } = require("express-validator");
@@ -48,7 +49,7 @@ module.exports = function(app) {
 
   //Routes
   app.post("/api/register", regValidation, register);
-  app.get("/", (req, res) => res.json("need a connection"));
+  // app.get("/", (req, res) => res.json("need a connection"));
   app.post("/api/login", logValidation, loginUser);
   app.post("/api/addchore", choreValidation, addChore);
   app.get("/api/addchore", isLoggedIn, addChore);
@@ -209,3 +210,7 @@ app.get("/api/logout", (req, res) => {
   req.session.destroy();
   res.send({ message: "Logged out" });
 });
+
+app.get("*", function(req, res){
+  res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+})
