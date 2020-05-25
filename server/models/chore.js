@@ -5,24 +5,23 @@ const Schema = mongoose.Schema;
 const ChoreSchema = new Schema({
   chore: String,
 
-  owner: 
-    {
-      type: Schema.Types.Mixed,
-      ref: "User",
-      require: false
-    },
+  owner: {
+    type: Schema.Types.Mixed,
+    ref: "User",
+    require: false,
+  },
 
   amount: Number,
 
   done: {
     type: Boolean,
-    default: false
+    default: false,
   },
 
   user: {
     type: Schema.Types.Mixed,
-    ref: "User"
-  }
+    ref: "User",
+  },
 });
 
 const Chore = mongoose.model("Chore", ChoreSchema);

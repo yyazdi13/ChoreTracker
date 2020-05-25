@@ -39,7 +39,6 @@
     ]
   },
   "proxy": "http://localhost:3001",
-
   "resolutions": {
     "babel-eslint": "9.0.0"
   }

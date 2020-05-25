@@ -1,24 +1,24 @@
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require("path");
 const expressValidator = require("express-validator");
-//const session = require("express-session");
+const session = require("express-session");
 var { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+//const obj = JSON.parse(JSON.stringify(req.body));
 const express = require("express");
 const User = require("./models/user");
 const Chore = require("./models/chore");
 const Reward = require("./models/rewards");
+const Earnings = require("./models/earnings");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Validate username and password
-module.exports = function(app) {
+module.exports = function (app) {
   const regValidation = [
-    check("username")
-      .not()
-      .isEmpty()
-      .withMessage("Username is required"),
+    check("username").not().isEmpty().withMessage("Username is required"),
     check("password")
       .not()
       .isEmpty()
@@ -29,21 +29,22 @@ module.exports = function(app) {
     check(
       "passwordconf",
       "Password confirmation is required and should be the same as the password"
-    ).custom(function(value, { req }) {
+    ).custom(function (value, { req }) {
       if (value !== req.body.password) {
+        console.log(value);
         throw new Error("Passwords do not match");
       }
 
       return value;
     }),
 
-    check("username").custom(value => {
-      return User.findOne({ username: value }).then(function(user) {
+    check("username").custom((value) => {
+      return User.findOne({ username: value }).then(function (user) {
         if (user) {
           throw new Error("This username already exists");
         }
       });
-    })
+    }),
   ];
 
   //Routes
@@ -58,12 +59,13 @@ module.exports = function(app) {
       else res.json(data);
     });
   });
+
   app.get("/user", (req, res) => {
     User.findOne({ username: req.query.q })
-      .then(response => {
+      .then((response) => {
         res.send(response);
       })
-      .catch(err => res.status(422).end());
+      .catch((err) => res.status(422).end());
   });
   app.post("/api/addReward", (req, res) => {
     console.log(req.body);
@@ -72,18 +74,22 @@ module.exports = function(app) {
       else res.json(data);
     });
   });
-  app.get("/api/findChores", (req,res) => {
-    Chore.find({}, (err, data)=> {
-      if (err) throw err;
-      else res.json(data)
-    })
-  });
-  app.post("/api/postChores", (req, res) => {
-    Chore.create({chore: req.body.chore, owner: req.session.user.username, amount: req.body.amount},(err,data) =>{
-      if (err) console.log(err);
-      else res.send(data);
-    })
-  })
+
+  //app.post("/api/earnings", (req, res) => {
+  //  Earnings.create(
+  //   {
+  //     earning: req.body.earning,
+  //     user: req.body.user,
+  //     total: req.body.total,
+  //     saved: req.body.saved,
+  //   },
+  //   (err, data) => {
+  //   if (err) console.log(err);
+  //   else res.json(data);
+  //     console.log(req.body);
+  //  }
+  //  );
+  // });
 
   //Check the validation
   function register(req, res) {
@@ -97,23 +103,17 @@ module.exports = function(app) {
     user.password = user.hashPassword(user.password);
     user
       .save()
-      .then(user => {
+      .then((user) => {
         return res.json(user);
       })
-      .catch(err => res.send(err));
+      .catch((err) => res.send(err));
   }
 };
 
 //user login
 const logValidation = [
-  check("username")
-    .not()
-    .isEmpty()
-    .withMessage("Username is required"),
-  check("password")
-    .not()
-    .isEmpty()
-    .withMessage("Password is required")
+  check("username").not().isEmpty().withMessage("Username is required"),
+  check("password").not().isEmpty().withMessage("Password is required"),
 ];
 
 function loginUser(req, res) {
@@ -123,10 +123,10 @@ function loginUser(req, res) {
   }
   console.log(req.body);
   User.findOne({
-    username: req.body.username
+    username: req.body.username,
   })
-    .then(function(user) {
-      console.log("username after db query", user);
+    .then(function (user) {
+      console.log("The username", user);
       if (!user) {
         return res.send({ error: true, message: "User does not exist" });
       }
@@ -136,10 +136,10 @@ function loginUser(req, res) {
       }
       req.session.user = user;
       req.session.isLoggedIn = true;
-      //res.send(user);
+      // res.send(user);
       return res.send({ message: "You are signed in" });
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 }
@@ -153,12 +153,29 @@ function isLoggedIn(req, res, next) {
 
 app.get("/api/isLoggedin", isLoggedIn);
 
+app.get("/api/findChores", (req, res) => {
+  Chore.find({}, (err, data) => {
+    if (err) throw err;
+    else res.json(data);
+  });
+});
+app.post("/api/postChores", (req, res) => {
+  Chore.create(
+    {
+      chore: req.body.chore,
+      owner: req.session.user.username,
+      amount: req.body.amount,
+    },
+    (err, data) => {
+      if (err) console.log(err);
+      else res.send(data);
+    }
+  );
+});
+
 //choreValidation - Enter a new chore
 const choreValidation = [
-  check("chore")
-    .not()
-    .isEmpty()
-    .withMessage("Please add a chore")
+  check("chore").not().isEmpty().withMessage("Please add a chore"),
 ];
 
 function addChore(req, res) {
@@ -173,10 +190,10 @@ function addChore(req, res) {
     chore.user = req.session.user.id;
     chore
       .save()
-      .then(chore => {
+      .then((chore) => {
         res.json(chore);
       })
-      .catch(error => {
+      .catch((error) => {
         res.json(error);
       });
   } else {
@@ -186,8 +203,8 @@ function addChore(req, res) {
 
 //Find chore
 app.post("api/chore/:id", (req, res) => {
-  Chore.findById(req.params.id).then(function(chore) {
-    chore.save().then(function(chore) {
+  Chore.findById(req.params.id).then(function (chore) {
+    chore.save().then(function (chore) {
       res.send(chore);
     });
   });
@@ -196,10 +213,10 @@ app.post("api/chore/:id", (req, res) => {
 function showChores(req, res) {
   Chore.find()
     .populate("owner", ["username"])
-    .then(chore => {
+    .then((chore) => {
       res.json(chore);
     })
-    .catch(error => {
+    .catch((error) => {
       res.json(error);
     });
 }
