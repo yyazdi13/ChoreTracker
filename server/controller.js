@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require("path");
 const expressValidator = require("express-validator");
 //const session = require("express-session");
 var { check, validationResult } = require("express-validator");
@@ -8,6 +9,7 @@ const express = require("express");
 const User = require("./models/user");
 const Chore = require("./models/chore");
 const Reward = require("./models/rewards");
+const Earnings = require("./models/earnings");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -48,7 +50,7 @@ module.exports = function(app) {
 
   //Routes
   app.post("/api/register", regValidation, register);
-  app.get("/", (req, res) => res.json("need a connection"));
+  // app.get("/", (req, res) => res.json("need a connection"));
   app.post("/api/login", logValidation, loginUser);
   app.post("/api/addchore", choreValidation, addChore);
   app.get("/api/addchore", isLoggedIn, addChore);
@@ -78,12 +80,27 @@ module.exports = function(app) {
       else res.json(data)
     })
   });
+  app.get("/api/findChoreAmount", (req, res) => {
+    Chore.findOne({chore: req.query.q}, (err, data) => {
+      if(err) throw err;
+      else res.json(data);
+    })
+  });
   app.post("/api/postChores", (req, res) => {
     Chore.create({chore: req.body.chore, owner: req.session.user.username, amount: req.body.amount},(err,data) =>{
       if (err) console.log(err);
       else res.send(data);
     })
-  })
+  });
+
+  //Earnings routes
+  app.post("/api/postEarnings", (req, res) => {
+    Earnings.create({user: req.session.user.username, amount: req.body.amount, total: req.body.total, saved: req.body.saved},
+      (err, data) => {
+      if (err) console.log(err);
+      else res.send(data);
+    })
+  });
 
   //Check the validation
   function register(req, res) {
@@ -209,3 +226,7 @@ app.get("/api/logout", (req, res) => {
   req.session.destroy();
   res.send({ message: "Logged out" });
 });
+
+app.get("*", function(req, res){
+  res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+})
