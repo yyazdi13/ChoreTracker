@@ -19,6 +19,7 @@ class Login extends Component {
       errors: null,
       valerrors: null,
       redirect: null,
+      errorMsg: "",
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -32,6 +33,14 @@ class Login extends Component {
     event.preventDefault();
 
     axios.post("/api/login", this.state).then((result) => {
+      if (!this.state.username || !this.state.password) {
+        return this.setState({
+          errorMsg: "please put in a username and password",
+        });
+      }
+      if (this.state.username && this.state.password) {
+        this.setState({ errorMsg: "" });
+      }
       if (result.data.error) {
         return this.setState({ error: result.data.message });
       }
@@ -59,6 +68,9 @@ class Login extends Component {
         >
           Chore Tracker Login/Registration
         </header>
+        <p style={{ color: "red", textAlign: "center" }}>
+          {this.state.errorMsg}
+        </p>
         <br></br>
         <h3
           style={{

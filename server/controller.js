@@ -49,7 +49,7 @@ module.exports = function (app) {
 
   //Routes
   app.post("/api/register", regValidation, register);
-  app.get("/", (req, res) => res.json("need a connection"));
+  // app.get("/", (req, res) => res.json("need a connection"));
   app.post("/api/login", logValidation, loginUser);
   app.post("/api/addchore", choreValidation, addChore);
   app.get("/api/addchore", isLoggedIn, addChore);
@@ -74,22 +74,47 @@ module.exports = function (app) {
       else res.json(data);
     });
   });
+  app.get("/api/findChores", (req, res) => {
+    Chore.find({}, (err, data) => {
+      if (err) throw err;
+      else res.json(data);
+    });
+  });
+  app.get("/api/findChoreAmount", (req, res) => {
+    Chore.findOne({ chore: req.query.q }, (err, data) => {
+      if (err) throw err;
+      else res.json(data);
+    });
+  });
+  app.post("/api/postChores", (req, res) => {
+    Chore.create(
+      {
+        chore: req.body.chore,
+        owner: req.session.user.username,
+        amount: req.body.amount,
+      },
+      (err, data) => {
+        if (err) console.log(err);
+        else res.send(data);
+      }
+    );
+  });
 
-  //app.post("/api/earnings", (req, res) => {
-  //  Earnings.create(
-  //   {
-  //     earning: req.body.earning,
-  //     user: req.body.user,
-  //     total: req.body.total,
-  //     saved: req.body.saved,
-  //   },
-  //   (err, data) => {
-  //   if (err) console.log(err);
-  //   else res.json(data);
-  //     console.log(req.body);
-  //  }
-  //  );
-  // });
+  //Earnings routes
+  app.post("/api/postEarnings", (req, res) => {
+    Earnings.create(
+      {
+        user: req.session.user.username,
+        amount: req.body.amount,
+        total: req.body.total,
+        saved: req.body.saved,
+      },
+      (err, data) => {
+        if (err) console.log(err);
+        else res.send(data);
+      }
+    );
+  });
 
   //Check the validation
   function register(req, res) {
@@ -225,4 +250,8 @@ function showChores(req, res) {
 app.get("/api/logout", (req, res) => {
   req.session.destroy();
   res.send({ message: "Logged out" });
+});
+
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
 });
