@@ -38,7 +38,7 @@ module.exports = function (app) {
       return value;
     }),
 
-    check("username").custom((value) => {
+    check("username").custom(value => {
       return User.findOne({ username: value }).then(function (user) {
         if (user) {
           throw new Error("This username already exists");
@@ -46,7 +46,6 @@ module.exports = function (app) {
       });
     }),
   ];
-
   //Routes
   app.post("/api/register", regValidation, register);
   // app.get("/", (req, res) => res.json("need a connection"));
@@ -62,10 +61,10 @@ module.exports = function (app) {
 
   app.get("/user", (req, res) => {
     User.findOne({ username: req.query.q })
-      .then((response) => {
+      .then(response => {
         res.send(response);
       })
-      .catch((err) => res.status(422).end());
+      .catch(err => res.status(422).end());
   });
   app.post("/api/addReward", (req, res) => {
     console.log(req.body);
@@ -128,10 +127,10 @@ module.exports = function (app) {
     user.password = user.hashPassword(user.password);
     user
       .save()
-      .then((user) => {
+      .then(user => {
         return res.json(user);
       })
-      .catch((err) => res.send(err));
+      .catch(err => res.send(err));
   }
 };
 
@@ -148,7 +147,7 @@ function loginUser(req, res) {
   }
   console.log(req.body);
   User.findOne({
-    username: req.body.username,
+    username: req.body.username
   })
     .then(function (user) {
       console.log("The username", user);
